@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ad index{% endblock %}
+
+{% block body %}
+    <h1>Ad index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Price</th>
+                <th>Banner</th>
+                <th>Text</th>
+                <th>ShowLimit</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ad in ads %}
+            <tr>
+                <td>{{ ad.id }}</td>
+                <td>{{ ad.price }}</td>
+                <td>{{ ad.banner }}</td>
+                <td>{{ ad.text }}</td>
+                <td>{{ ad.showLimit }}</td>
+                <td>
+                    <a href="{{ path('ad_crud_show', {'id': ad.id}) }}">show</a>
+                    <a href="{{ path('ad_crud_edit', {'id': ad.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ad_crud_new') }}">Create new</a>
+{% endblock %}

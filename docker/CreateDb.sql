@@ -1,0 +1,2 @@
+CREATE DATABASE ads;
+USE ads;
