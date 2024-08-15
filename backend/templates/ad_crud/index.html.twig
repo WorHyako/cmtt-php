@@ -12,7 +12,7 @@
                 <th>Price</th>
                 <th>Banner</th>
                 <th>Text</th>
-                <th>ShowLimit</th>
+                <th>Show count</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
                 <td>{{ ad.price }}</td>
                 <td>{{ ad.banner }}</td>
                 <td>{{ ad.text }}</td>
-                <td>{{ ad.showLimit }}</td>
+                <td>{{ ad.showCount }}</td>
                 <td>
                     <a href="{{ path('ad_crud_show', {'id': ad.id}) }}">show</a>
                     <a href="{{ path('ad_crud_edit', {'id': ad.id}) }}">edit</a>

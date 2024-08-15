@@ -31,7 +31,7 @@ class AdFields extends Constraint
 
     public string $incorrectBannerMessage = 'Invalid banner value';
 
-    public string $incorrectShowLimitMessage = 'Invalid limit value';
+    public string $incorrectShowCountMessage = 'Invalid show count value';
 
     public function getTargets(): string
     {

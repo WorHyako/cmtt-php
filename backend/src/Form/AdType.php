@@ -16,7 +16,7 @@ class AdType extends AbstractType
             ->add('price')
             ->add('banner')
             ->add('text')
-            ->add('showLimit')
+            ->add('showCount')
         ;
     }
 

@@ -14,8 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *      $ad = (new Ad)
  *          ->setText($text)
  *          ->setPrice($price)
- *          ->setBanner($banner)
- *          ->setShowLimit($showLimit);
+ *          ->setBanner($banner);
  * </pre>
  *
  * @since   0.0.1
@@ -26,6 +25,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AdRepository::class)]
 class Ad
 {
+    public static int $minPrice = 1;
+
+    public static int $minBannerLength = 1;
+
+    public static int $minTextLength = 1;
+
+    public static int $showLimit = 4;
+
     /**
      * @var int|null Ad id in DB.
      */
@@ -35,12 +42,12 @@ class Ad
     private ?int $id = null;
 
     /**
-     * @var int|null    Ad price.
-     *                  <p/>
-     *                  Should have non-zero positive value.
+     * @var int Ad price.
+     *          <p/>
+     *          Should have non-zero positive value.
      */
     #[ORM\Column]
-    private ?int $price = null;
+    private int $price = 0;
 
     /**
      * @var string|null Ad banner reference.
@@ -59,18 +66,18 @@ class Ad
     private ?string $text = null;
 
     /**
-     * @var int|null    Ad show limit.
-     *                  <p/>
-     *                  Should have non-zero positive value.
+     * @var int Ad show count.
+     *          <p/>
+     *          Should have non-zero positive value.
      */
     #[ORM\Column]
-    private ?int $showLimit = null;
+    private int $showCount = 0;
 
     /**
      * Compares two objects with no account id.
      *
      * <pre>
-     *     $isEqual = Ad::cmpData($firstAd, $secondId);
+     *          $isEqual = Ad::cmpData($firstAd, $secondId);
      * </pre>
      *
      * @param Ad|null $one The first object to compare.
@@ -83,13 +90,20 @@ class Ad
      */
     public static function cmpData(Ad|null $one, Ad|null $two): bool
     {
-        return $one->getId() == $two->getId()
-            && $one->getPrice() == $two->getPrice()
+        return $one->getPrice() == $two->getPrice()
             && $one->getBanner() == $two->getBanner()
+            && $one->getShowCount() == $two->getShowCount()
             && $one->getText() == $two->getText();
     }
 
 #region Accessors/Mutators
+
+    public function incrementShowCount(): static
+    {
+        $this->showCount++;
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -101,7 +115,7 @@ class Ad
         return $this->price;
     }
 
-    public function setPrice(int|null $price): static
+    public function setPrice(int $price): static
     {
         $this->price = $price;
 
@@ -132,14 +146,14 @@ class Ad
         return $this;
     }
 
-    public function getShowLimit(): ?int
+    public function getShowCount(): ?int
     {
-        return $this->showLimit;
+        return $this->showCount;
     }
 
-    public function setShowLimit(int|null $showLimit): static
+    public function setShowCount(int $showCount): static
     {
-        $this->showLimit = $showLimit;
+        $this->showCount = $showCount;
 
         return $this;
     }

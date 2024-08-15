@@ -24,11 +24,6 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class AdFieldsValidator extends ConstraintValidator
 {
-    private int $minPrice = 1;
-    private int $minBannerLength = 1;
-    private int $minTextLength = 1;
-    private int $minLimit = 1;
-
     /**
      * Validate object
      *
@@ -54,25 +49,25 @@ class AdFieldsValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, AdFields::class);
         }
 
-        if ($value->getPrice() == null || $value->getPrice() < $this->minPrice) {
+        if ($value->getPrice() == null || $value->getPrice() < Ad::$minPrice) {
             $this->context->buildViolation($constraint->incorrectPriceMessage)
                 ->atPath('price')
                 ->addViolation();
         }
 
-        if ($value->getShowLimit() == null || $value->getShowLimit() < $this->minLimit) {
-            $this->context->buildViolation($constraint->incorrectShowLimitMessage)
-                ->atPath('limit')
+        if ($value->getShowCount() < 0) {
+            $this->context->buildViolation($constraint->incorrectShowCountMessage)
+                ->atPath('showCount')
                 ->addViolation();
         }
 
-        if ($value->getBanner() == null || strlen($value->getBanner()) < $this->minBannerLength) {
+        if ($value->getBanner() == null || strlen($value->getBanner()) < Ad::$minBannerLength) {
             $this->context->buildViolation($constraint->incorrectBannerMessage)
                 ->atPath('banner')
                 ->addViolation();
         }
 
-        if ($value->getText() == null || strlen($value->getText()) < $this->minTextLength) {
+        if ($value->getText() == null || strlen($value->getText()) < Ad::$minTextLength) {
             $this->context->buildViolation($constraint->incorrectTextMessage)
                 ->atPath('text')
                 ->addViolation();

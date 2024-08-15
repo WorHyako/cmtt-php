@@ -58,8 +58,7 @@ class AdController extends AbstractController
         $ad = (new Ad())
             ->setText($query->get('text'))
             ->setPrice($query->get('price'))
-            ->setBanner($query->get('banner'))
-            ->setShowLimit($query->get('limit'));
+            ->setBanner($query->get('banner'));
 
         $adFromDB = $adRepository->findOneByFields($ad);
         if (Ad::cmpData($adFromDB, $ad)) {
@@ -114,7 +113,7 @@ class AdController extends AbstractController
         $ad->setText($query->get('text'))
             ->setPrice($query->get('price'))
             ->setBanner($query->get('banner'))
-            ->setShowLimit($query->get('limit'));
+            ->setShowCount($query->get('limit'));
 
         $validateResult = $validator->validate($ad);
         if ($validateResult->count()) {
@@ -141,7 +140,14 @@ class AdController extends AbstractController
     public function get(AdRepository           $adRepository,
                         EntityManagerInterface $em): JsonResponse
     {
-        $ad = $adRepository->findOneByField();
+        $ad = $adRepository->findOneMoreRelevant();
+        if ($ad === null) {
+            return $this->generateAnswer($ad, false, 'Object not exists');
+        }
+
+        $ad->incrementShowCount();
+        $em->flush();
+
         return $this->generateAnswer($ad, true, 'OK');
     }
 
@@ -160,6 +166,8 @@ class AdController extends AbstractController
      * @param string $message Message value for answer.
      *
      * @return JsonResponse
+     *
+     * TODO: need to do smth with nullable {$ad}
      */
     private function generateAnswer(Ad     $ad,
                                     bool   $positive,
